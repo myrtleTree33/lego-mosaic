@@ -4,6 +4,7 @@ import csv
 from filters import *
 import errno
 import os
+import base64
 
 
 class Image(object):
@@ -21,6 +22,19 @@ class Image(object):
             raise EnvironmentError(errno.ENOENT, os.strerror(errno.ENOENT), filepath)
         self.img = cv2.resize(self.img, (self.length, self.length))
         return self
+
+
+    def load_str(self, img_str_base64):
+        img_str = base64.b64decode(img_str_base64)
+        nparr = np.fromstring(img_str, dtype=np.uint8)
+        self.img = cv2.imdecode(nparr, 1) # cv2.IMREAD_COLOR in OpenCV 3.1
+        self.img = cv2.resize(self.img, (self.length, self.length))
+        return self
+
+
+    def dump_str_base64(self, file_format):
+        dump = cv2.imencode('.' + file_format, self.img)[1].tostring()
+        return base64.b64encode(dump)
 
 
     def apply_filter(self, filter):

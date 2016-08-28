@@ -11,9 +11,12 @@ setup(name='lego_mosaic',
       license='GNU GPLv3',
       packages=['lego_mosaic'],
       zip_safe=False,
+      install_requires=[
+          'numpy'
+      ],
       entry_points={
           'console_scripts': [
               'legomosaic = lego_mosaic.__main__:main'
           ]
       }
-  )
+      )

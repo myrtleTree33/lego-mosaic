@@ -1,9 +1,25 @@
+import zerorpc
+import argparse
 from filters import *
 from image import Image
-import argparse
+from server import MosaicServer
+
+IP = 'tcp://0.0.0.0'
+PORT = '4000'
+
+def run_server(ip, port):
+    # Run a server if specified
+    address = ip + ":" + port
+    server = zerorpc.Server(MosaicServer())
+    print 'Running server at %s' % address
+    server.bind(address)
+    server.run()
+
 
 def main():
     parser = argparse.ArgumentParser(description='Convert your pictures into a a Lego mosaic.')
+    # parser.add_argument('--server', action='run_server', help='If toggled, displays output to screen')
+    parser.add_argument('--server', nargs='?', const=True, type=bool, default=False, help='Starts a ZMQ server')
     parser.add_argument('input_filename', metavar='input_filename', type=str, nargs='?', help='The input image to convert')
     parser.add_argument('output_filename', metavar='output_filename', type=str, const='out.jpg', default='out.jpg', nargs='?', help='The output image to save to')
     parser.add_argument('--show', nargs='?', const=True, type=bool, default=False, help='If toggled, displays output to screen')
@@ -15,11 +31,14 @@ def main():
                     #    help='sum the integers (default: find the max)')
 
     args = parser.parse_args()
-    print args
+
+    start_server = args.server
+    if (start_server):
+        run_server(IP, PORT)
+
 
     input_filename = args.input_filename
     output_filename = args.output_filename
-    print output_filename
     tile_size = args.size
     n = args.num_clusters
     img_length = args.length
