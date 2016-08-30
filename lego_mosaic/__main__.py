@@ -3,6 +3,8 @@ import argparse
 from filters import *
 from image import Image
 from server import MosaicServer
+import pkg_resources
+
 
 IP = 'tcp://0.0.0.0'
 PORT = '4000'
@@ -43,11 +45,13 @@ def main():
     n = args.num_clusters
     img_length = args.length
 
+    resource_path = 'Lego-colors-palette-2010.gpl.csv'
+    csv_filepath = pkg_resources.resource_filename(__name__, resource_path)
+
     img = Image(img_length)
-    img.load_file(input_filename)
-    img \
+    img.load_file(input_filename) \
     .apply_filter(QuantizeFilter(n)) \
-    .apply_filter(ConstrainPaletteFilter('Lego-colors-palette-2010.gpl.csv')) \
+    .apply_filter(ConstrainPaletteFilter(csv_filepath)) \
     .apply_filter(BuildMapFilter(tile_size)) \
     .save_file(output_filename)
 

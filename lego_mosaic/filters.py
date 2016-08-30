@@ -50,6 +50,7 @@ class ConstrainPaletteFilter(Filter):
 
 
     def _build_palette(self, csv_file):
+        print csv_file
         with open(csv_file, 'rb') as csvfile:
             reader = csv.reader(csvfile, delimiter = ',')
             reader.next()
