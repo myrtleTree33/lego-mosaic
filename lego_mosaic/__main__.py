@@ -29,6 +29,7 @@ def main():
     parser.add_argument('--size', nargs='?', const=5, type=int, default=5, help='The rendering length of each tile.')
     parser.add_argument('--length', nargs='?', const=48, type=int, default=48, help='The length of each mosaic.')
     parser.add_argument('--num_clusters', nargs='?', const=7, type=int, default=7, help='Number of color clusters to quantize')
+    parser.add_argument('--palette_scheme', nargs='?', const='colors2010', type=str, default='colors2010', help='Color palette scheme to use')
     # parser.add_argument('--show', dest='accumulate', action='store_const',
                     #    const=sum, default=max,
                     #    help='sum the integers (default: find the max)')
@@ -45,17 +46,18 @@ def main():
     tile_size = args.size
     n = args.num_clusters
     img_length = args.length
+    palette_scheme = args.palette_scheme
 
     resource_path = 'Lego-colors-palette-2010.gpl.csv'
     csv_filepath = pkg_resources.resource_filename(__name__, resource_path)
 
     color_generator = Color_Generator()
-    color_generator.load_palette('colors2010', csv_filepath)
+    color_generator.load_palette(palette_scheme, csv_filepath)
 
     img = Image(img_length)
     img.load_file(input_filename) \
     .apply_filter(QuantizeFilter(n)) \
-    .apply_filter(ConstrainPaletteFilter(color_generator, 'colors2010')) \
+    .apply_filter(ConstrainPaletteFilter(color_generator, palette_scheme)) \
     .apply_filter(BuildMapFilter(tile_size)) \
     .save_file(output_filename)
 
