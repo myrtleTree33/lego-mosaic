@@ -2,6 +2,7 @@ import zerorpc
 import argparse
 from filters import *
 from image import Image
+from color_generator import Color_Generator
 from server import MosaicServer
 import pkg_resources
 
@@ -48,10 +49,13 @@ def main():
     resource_path = 'Lego-colors-palette-2010.gpl.csv'
     csv_filepath = pkg_resources.resource_filename(__name__, resource_path)
 
+    color_generator = Color_Generator()
+    color_generator.load_palette('colors2010', csv_filepath)
+
     img = Image(img_length)
     img.load_file(input_filename) \
     .apply_filter(QuantizeFilter(n)) \
-    .apply_filter(ConstrainPaletteFilter(csv_filepath)) \
+    .apply_filter(ConstrainPaletteFilter(color_generator, 'colors2010')) \
     .apply_filter(BuildMapFilter(tile_size)) \
     .save_file(output_filename)
 

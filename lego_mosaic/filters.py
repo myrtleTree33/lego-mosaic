@@ -43,20 +43,9 @@ class QuantizeFilter(Filter):
 
 class ConstrainPaletteFilter(Filter):
     """docstring for ConstrainPaletteFilter."""
-    def __init__(self, palette_filepath):
+    def __init__(self, color_generator, palette_name):
         super(ConstrainPaletteFilter, self).__init__()
-        self.palette = []
-        self._build_palette(palette_filepath)
-
-
-    def _build_palette(self, csv_file):
-        print csv_file
-        with open(csv_file, 'rb') as csvfile:
-            reader = csv.reader(csvfile, delimiter = ',')
-            reader.next()
-            for row in reader:
-                b,g,r = row[:3]
-                self.palette.append([int(r),int(g),int(b)])
+        self.palette = color_generator.get_palette(palette_name)
 
 
     def _fit_palette(self, pic):

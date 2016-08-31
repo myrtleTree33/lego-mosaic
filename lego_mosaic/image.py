@@ -1,6 +1,5 @@
 import numpy as np
 import cv2
-import csv
 from filters import *
 import errno
 import os
