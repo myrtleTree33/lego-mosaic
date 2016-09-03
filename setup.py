@@ -11,7 +11,7 @@ setup(name='lego_mosaic',
       license='GNU GPLv3',
       packages=['lego_mosaic'],
       zip_safe=False,
-      package_data={'': ['Lego-colors-palette-2010.gpl.csv']},
+      package_data={'': ['**/*.csv']},
       install_requires=[
           'numpy'
       ],

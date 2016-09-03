@@ -47,9 +47,7 @@ class ConstrainPaletteFilter(Filter):
         super(ConstrainPaletteFilter, self).__init__()
         self.palette = color_generator.get_palette(palette_name)
 
-
     def _fit_palette(self, pic):
-
         def _nearestColor(pixel, palette):
             MAX_DIFF = pow(pow(255, 2) * 3, .5)
             nearest_color, smallest_val = 0, MAX_DIFF
@@ -67,13 +65,12 @@ class ConstrainPaletteFilter(Filter):
         output = np.zeros((w,h,3), np.uint8)
         for y, row in enumerate(pic):
             for x, color in enumerate(row):
-                a = _nearestColor(pic[y][x], self.palette)
-                output[y][x] = a
+                output[y][x] = _nearestColor(pic[y][x], self.palette)
         return output
 
 
     def apply(self, target):
-        self.img = self._fit_palette(target.img)
+        target.img = self._fit_palette(target.img)
 
 
 class BuildMapFilter(Filter):

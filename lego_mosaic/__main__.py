@@ -5,6 +5,8 @@ from image import Image
 from color_generator import Color_Generator
 from server import MosaicServer
 import pkg_resources
+import os
+import glob
 
 
 IP = 'tcp://0.0.0.0'
@@ -47,12 +49,24 @@ def main():
     n = args.num_clusters
     img_length = args.length
     palette_scheme = args.palette_scheme
+    print '************************'
+    print palette_scheme
+    print '************************'
 
-    resource_path = 'Lego-colors-palette-2010.gpl.csv'
-    csv_filepath = pkg_resources.resource_filename(__name__, resource_path)
+    resource_path = 'legocolors2010.csv'
 
     color_generator = Color_Generator()
-    color_generator.load_palette(palette_scheme, csv_filepath)
+
+    def load_color_palettes():
+        pattern = os.path.dirname(__file__) + '/resources/*.csv'
+        for filename in glob.iglob(pattern):
+            palette_name = os.path.splitext(os.path.basename(filename))[0]
+            color_generator.load_palette(palette_name, filename)
+
+    load_color_palettes()
+
+    # csv_filepath = pkg_resources.resource_filename(__name__, resource_path)
+    # color_generator.load_palette('greyscale', )
 
     img = Image(img_length)
     img.load_file(input_filename) \
