@@ -48,6 +48,15 @@ def main():
 
     args = parser.parse_args()
 
+    color_generator = Color_Generator()
+    def load_color_palettes():
+        pattern = os.path.dirname(__file__) + '/resources/*.csv'
+        for filename in glob.iglob(pattern):
+            palette_name = os.path.splitext(os.path.basename(filename))[0]
+            color_generator.load_palette(palette_name, filename)
+
+    load_color_palettes()
+
     start_server = args.server
     if (start_server):
         run_server(IP, PORT)
@@ -62,17 +71,11 @@ def main():
     print palette_scheme
     print '************************'
 
-    resource_path = 'legocolors2010.csv'
+    # resource_path = 'legocolors2010.csv'
 
-    color_generator = Color_Generator()
 
-    def load_color_palettes():
-        pattern = os.path.dirname(__file__) + '/resources/*.csv'
-        for filename in glob.iglob(pattern):
-            palette_name = os.path.splitext(os.path.basename(filename))[0]
-            color_generator.load_palette(palette_name, filename)
 
-    load_color_palettes()
+
 
     # csv_filepath = pkg_resources.resource_filename(__name__, resource_path)
     # color_generator.load_palette('greyscale', )

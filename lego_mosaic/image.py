@@ -28,6 +28,7 @@ class Image(object):
         img_str = base64.b64decode(img_str_base64)
         nparr = np.fromstring(img_str, dtype=np.uint8)
         self.img = cv2.imdecode(nparr, 1)  # cv2.IMREAD_COLOR in OpenCV 3.1
+        # self.img = cv2.cvtColor(self.img,cv2.COLOR_BGR2RGB) # flip BGR to RGB
         self.img = cv2.resize(self.img, (self.length, self.length))
         return self
 
