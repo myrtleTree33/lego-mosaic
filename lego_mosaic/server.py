@@ -37,6 +37,7 @@ class MosaicServer(object):
             .apply_filter(ConstrainPaletteFilter(self.color_generator, palette_name)) \
             .apply_filter(BuildMapFilter(tile_size))
         output_base64 = img.dump_str_base64('png')
+        print 'image generated..'
         return output_base64
 
 
