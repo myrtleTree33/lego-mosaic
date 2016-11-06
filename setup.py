@@ -13,7 +13,7 @@ setup(name='lego_mosaic',
       zip_safe=False,
       package_data={'': ['**/*.csv']},
       install_requires=[
-          'numpy'
+          'numpy', 'zerorpc'
       ],
       entry_points={
           'console_scripts': [
