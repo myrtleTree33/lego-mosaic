@@ -33,8 +33,8 @@ class Image(object):
         return self
 
     def dump_str_base64(self, file_format):
-        dump = cv2.imencode('.' + file_format, self.img)[1].tostring()
-        return base64.b64encode(dump)
+        dump = cv2.imencode('.' + file_format, self.img)[1]
+        return base64.encodestring(dump)
 
     def apply_filter(self, filter):
         filter.apply(self)
